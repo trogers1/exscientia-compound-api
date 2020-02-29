@@ -1,0 +1,69 @@
+service: sls-exscientia-compounds-api-lambda
+
+provider:
+  environment:
+    ENV: ${opt:stage, 'local'}
+    DB_URL: ${env:DB_URL, file(./env.yml):DB_URL}
+  name: aws
+  runtime: nodejs10.x
+  region: us-west-2
+  stage: ${opt:stage}
+
+package:
+  include:
+    - config/**
+    - handlers/**
+    - helpers/**
+    - models/**
+    - node_modules/**
+    - requestSchemas/**
+    - responseSchemas/**
+    - tests/**
+    - utils/**
+  exclude:
+    - ./**
+
+functions:
+  getAllCompounds:
+    handler: handlers/GET_All.main
+    events:
+      - http:
+          path: /compounds
+          method: get
+  getSingleCompound:
+    handler: handlers/GET_Single.main
+    events:
+      - http:
+          path: /compounds/{id}
+          method: get
+  createCompound:
+    handler: handlers/POST_create.main
+    events:
+      - http:
+          path: /compounds
+          method: post
+  updateCompound:
+    handler: handlers/PATCH.main
+    events:
+      - http:
+          path: /compounds/{id}
+          method: patch
+  deleteCompound:
+    handler: handlers/DELETE.main
+    events:
+      - http:
+          path: /compounds/{id}
+          method: delete
+  badRequest:
+    handler: handlers/badRequest.main
+    events:
+      - http:
+          path: /blog/{id}/{all+}
+          method: any
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    port: 4000
