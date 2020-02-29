@@ -20,16 +20,9 @@ This will start up the `serverless-offline` plugin to run the functions and list
 
 While I didn't have enough time to get to all the testing I wanted to do, there are some limited unit tests that can be run with `npm run unit` or `npm test`. These only test the error formatters as is.
 
-## Deploying
+## Deployment
 
 Automated CI/CD has been implemented for this API using [Codeship](https://codeship.com/) to create two different 'live' environments: QA and PROD, each using their own collection within a remote mongoDB database hosted by Mongo Atlas. The CI/CD pipeline works such that, whenever new code is pushed to the `qa` branch, the testing suite is run, and, if everything passes, the new code is automatically deployed to AWS. After you 'qa' the API using the new 'qa' environment/deployment, you can merge the changes to `master`, where the tests will be run again, and, should they pass, the API will be redeployed in the 'production' environment on AWS. You can see the deployment commands in the `package.json` under `scripts`: `deploy:qa` and `deploy:prod`.
-
-## Using the API Remotely
-
-The API has been deployed to AWS, so you can use it remotely like any other.
-
-- QA Resources: `https://hirwghncp3.execute-api.us-west-2.amazonaws.com/QA/`.
-- PROD Resources: `https://yvqzu8iyqb.execute-api.us-west-2.amazonaws.com/PROD/`
 
 ## What I Would Have Done If I Had More Time
 
