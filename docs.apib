@@ -1,0 +1,164 @@
+FORMAT: 1A
+
+# Exscientia Compound API
+
+## The Compound Resource [/compounds{?limit,offset,results,operators,sort}]
+
+The `/compounds` resource is available with the following methods:
+
+- `GET`: query all available compounds in a paginated manner with the option to supply various
+  query paramaters to filter the results.
+- `POST`: send in a valid compound in JSON format to create a new compound and add it to the
+  database.
+
+* Parameters
+  - limit: `100` (required) - The maximum number of documents returned in the payload (maximum 100).
+  - offset: `10` - The number of documents that will be skipped.
+  - results: `Kd,IC50` - A comma-separated list of types of assay results to filter on. Only compounds that contain an assay result of one of the provided result types will be returned. Valid members: `Kd`, `IC50`, `Ki`.
+  - operators: `=,>` - A comma-separated list of operators to filter on. Only compounds that contain an assay result of one of the provided operators will be returned. Valid members: `=`, `>`, `<`, `<=,` `>=,` `~`, `*`.
+
+### Get All Compounds [GET]
+
+You may retrieve all compounds by making a `GET` request to the `/compounds` resource.
+
+### Create a Single Compound [POST]
+
+A `POST` request can be made to the `/compounds` resource to create a new compound. It will be
+validated against a JSONSchema, and must be an object of the following properties:
+
+- `compound_id`: 1175670 (number, required) - Unique identifier for a compound, this is the primary key.
+- smiles: `Cc1onc(C)c1c2ccccc2` (string, required) - String representation of the compound.
+- `molecular_weight`: 173.21114 (number, required) - The weight of the compound, could be plotted on the X axis..
+- `ALogP`: 2.23 (number, required) - Indicates if the compound will dissolve in water or not, could be plotted on the Y axis.
+- `molecular_formula`: `C11H11NO` (string, required) - A short string representation of the compound..
+- `num_rings`: 2 (number, required) - A count of the rings in the compound, could be used to color a plot.
+- image: `images/1175670.png` (string, required) - Compounds are visualised as 2D graphs, path to a pre-calculated png image of the compound.
+- `assay_results`: (array, required) - The assay results for the compound (could be shown as Kd = 19uM)
+
+A member of the `assay_results` should be an object with the following properties:
+
+- `result_id`: 6364732 (number, required) - Unique identifier for an assay_result.
+- `target`: `Bromodomain-containing protein 4` (string, required) - The long name of the biological target used in the assay.
+- `result`: `IC50` (enum[string], required) - The result type of the assay.
+  - `Kd`
+  - `IC50`
+  - `Ki`
+- `operator`: `=` (enum[string], required) - The value operator.
+  - `=`
+  - `>`
+  - `<`
+  - `<=`
+  - `>=`
+  - `~`
+  - `*`
+- `value`: 84200 (number) - The result value.
+- `unit`: `nM` (string) - The result unit.
+
+## The Single Compound Resource [/compounds/{compound_id}]
+
+The single compound resource provides functionality related to individual compounds. The following methods are allowed:
+
+- `GET`: Retrieve a single compound
+- `PATCH`: Update a single compound
+- `DELETE`: Delete a single compound
+
+* Parameters
+  - `compound_id`: `5d6577c11311383d942494f6` (string, required) - The string identifier for the Compound that is automatically generated, unique, 24 characters long, and hexadecimal.
+
+### Get a Single Compound [GET]
+
+Retrieve a single compound with a GET request to `/compounds/{compound_id}`.
+
+### Update a Single Compound [PATCH]
+
+The `PATCH` method will allow you to update an existing compound with the provided JSON request body.
+The following are valid attributes that can be changed:
+
+- smiles: `Cc1onc(C)c1c2ccccc2` (string, required) - String representation of the compound.
+- `molecular_weight`: 173.21114 (number, required) - The weight of the compound, could be plotted on the X axis..
+- `ALogP`: 2.23 (number, required) - Indicates if the compound will dissolve in water or not, could be plotted on the Y axis.
+- `molecular_formula`: `C11H11NO` (string, required) - A short string representation of the compound..
+- `num_rings`: 2 (number, required) - A count of the rings in the compound, could be used to color a plot.
+- image: `images/1175670.png` (string, required) - Compounds are visualised as 2D graphs, path to a pre-calculated png image of the compound.
+- `assay_results`: (array, required) - The assay results for the compound (could be shown as Kd = 19uM)
+
+Note that the `assay_results` array will be replaced wholesale with your new value.
+
+### Delete a Single Compound [DELETE]
+
+Delete an individual compound by `compound_id` by making a `DELETE` request to `compounds/{compound_id}`.
+
+## Data Structures
+
+### Assay Results
+
+- `result_id`: 6364732 (number, required) - Unique identifier for an assay_result.
+- `target`: `Bromodomain-containing protein 4` (string, required) - The long name of the biological target used in the assay.
+- `result`: `IC50` (enum[string], required) - The result type of the assay.
+  - `Kd`
+  - `IC50`
+  - `Ki`
+- `operator`: `=` (enum[string], required) - The value operator.
+  - `=`
+  - `>`
+  - `<`
+  - `<=`
+  - `>=`
+  - `~`
+  - `*`
+- `value`: 84200 (number) - The result value.
+- `unit`: `nM` (string) - The result unit.
+
+### Compound
+
+- `compound_id`: 1175670 (number, required) - Unique identifier for a compound, this is the primary key.
+- smiles: `Cc1onc(C)c1c2ccccc2` (string, required) - String representation of the compound.
+- `molecular_weight`: 173.21114 (number, required) - The weight of the compound, could be plotted on the X axis..
+- `ALogP`: 2.23 (number, required) - Indicates if the compound will dissolve in water or not, could be plotted on the Y axis.
+- `molecular_formula`: `C11H11NO` (string, required) - A short string representation of the compound..
+- `num_rings`: 2 (number, required) - A count of the rings in the compound, could be used to color a plot.
+- image: `images/1175670.png` (string, required) - Compounds are visualised as 2D graphs, path to a pre-calculated png image of the compound.
+- `assay_results`: (array[Assay Results]) - The assay results for the compound (could be shown as Kd = 19uM)
+
+### Compound PATCH
+
+- `compound_id`: 1175670 (number, required) - Unique identifier for a compound, this is the primary key.
+- smiles: `Cc1onc(C)c1c2ccccc2` (string, required) - String representation of the compound.
+- `molecular_weight`: 173.21114 (number, required) - The weight of the compound, could be plotted on the X axis..
+- `ALogP`: 2.23 (number, required) - Indicates if the compound will dissolve in water or not, could be plotted on the Y axis.
+- `molecular_formula`: `C11H11NO` (string, required) - A short string representation of the compound..
+- `num_rings`: 2 (number, required) - A count of the rings in the compound, could be used to color a plot.
+- image: `images/1175670.png` (string, required) - Compounds are visualised as 2D graphs, path to a pre-calculated png image of the compound.
+- `assay_results`: (array[Assay Results], required) - The assay results for the compound (could be shown as Kd = 19uM)
+
+### Compound JSONAPI
+
+- attributes (Compound, required)
+- id: 5d4c96c4d228c6000731430b (string, required) - The string identifier for the compound that is automatically generated, unique, 24 characters long, and hexadecimal.
+- type: `compound` (string, required) - type of object (JSON-API spec)
+
+### Compound PATCH JSONAPI
+
+- attributes (Compound PATCH, required)
+- type: `compound` (string, required) - type of object (JSON-API spec)
+
+### 404 Error JSONAPI
+
+- errors (array, required)
+  - (object)
+    - status: 404 (number, required) - HTTP status code corresponding to the error
+    - title: `Resource Not Found` (string, required) - title of the error
+    - detail: `Unable to find the resource with id: '000000000000000000000000'.` (string, required) - description of error event
+
+### 400 Error JSONAPI
+
+- errors (array, required)
+  - (object)
+    - status: 400 (number, required) - HTTP status code corresponding to the error
+    - title: `Bad Request` (string, required) - title of the error
+    - detail: `Your request was malformed: <specific error message>.` (string, optional) - description of error event
+
+### Meta
+
+- count: `3` (number, required) - The number of resources returned in the response body.
+- totalAvailable: `3` (number, required) - The total number of records available.
