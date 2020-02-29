@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { ENV } = process.env;
+
 let collection;
 switch (ENV) {
   case 'ci':
