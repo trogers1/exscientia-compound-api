@@ -4,8 +4,8 @@
   "description": "A code challenge for Exscientia",
   "main": "index.js",
   "scripts": {
-    "deploy:prod": "export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID; export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY; sls deploy -s PROD --force;",
-    "deploy:qa": "export AWS_ACCESS_KEY_ID=$QA_AWS_ACCESS_KEY_ID; export AWS_SECRET_ACCESS_KEY=$QA_AWS_SECRET_ACCESS_KEY; sls deploy -s QA --force;",
+    "deploy:prod": "export AWS_ACCESS_KEY_ID=$LAMBDA_AWS_ACCESS_KEY_ID; export AWS_SECRET_ACCESS_KEY=$LAMBDA_AWS_SECRET_ACCESS_KEY; sls deploy -s PROD --force;",
+    "deploy:qa": "export AWS_ACCESS_KEY_ID=$LAMBDA_AWS_ACCESS_KEY_ID; export AWS_SECRET_ACCESS_KEY=$LAMBDA_AWS_SECRET_ACCESS_KEY; sls deploy -s QA --force;",
     "dredd": "docker-compose up --build & dredd --config ./config/dredd-local.yml; docker-compose down",
     "dredd:parse": "dredd ./docs.md http://127.0.0.1 --names",
     "start": "trap 'docker-compose down; exit 0' SIGINT; docker-compose up --build & nodemon -e 'yml js json' --exec 'sls offline start -s local --skipCacheInvalidation'",
