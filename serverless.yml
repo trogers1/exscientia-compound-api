@@ -25,13 +25,13 @@ package:
 
 functions:
   getAllCompounds:
-    handler: handlers/GET_All.main
+    handler: handlers/GET_all.main
     events:
       - http:
           path: /compounds
           method: get
   getSingleCompound:
-    handler: handlers/GET_Single.main
+    handler: handlers/GET_single.main
     events:
       - http:
           path: /compounds/{id}
