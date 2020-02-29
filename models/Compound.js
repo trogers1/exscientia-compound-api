@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
 
+let collection;
+switch (ENV) {
+  case 'ci':
+    collection = 'LOCAL';
+    break;
+  case 'QA':
+    collection = ENV;
+    break;
+  case 'PROD':
+    collection = ENV;
+    break;
+  default:
+    collection = 'LOCAL';
+}
+
 const compoundSchema = new mongoose.Schema(
   {
     compound_id: { type: Number, index: true },
@@ -21,7 +36,7 @@ const compoundSchema = new mongoose.Schema(
     ]
   },
   {
-    collection: 'compounds',
+    collection: `compounds-${collection}`,
     timestamps: true
   }
 );
