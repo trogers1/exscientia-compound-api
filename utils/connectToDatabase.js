@@ -24,7 +24,7 @@ function connectToDatabase() {
   console.log('=> creating new database connection...');
   console.log(`=> Connection URL: ${url}`);
 
-  return mongoose.connect(url, { useNewUrlParser: true }).catch(error => {
+  return mongoose.connect(url).catch(error => {
     console.error('Connection error', error);
     throw formatDatabaseError({ message: error.name });
   });
