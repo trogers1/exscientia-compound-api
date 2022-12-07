@@ -29,7 +29,7 @@
     "mocha": "^7.0.1",
     "nodemon": "^2.0.2",
     "prettier": "^1.19.1",
-    "serverless": "^1.64.0",
+    "serverless": "^3.25.1",
     "serverless-offline": "^5.12.1"
   },
   "dependencies": {
